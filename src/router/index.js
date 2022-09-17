@@ -35,6 +35,22 @@ const routes = [
     name: 'userDashboard',
     component: () => import(/* webpackChunkName: "about" */ '../views/UserDashboardView.vue')
 
+  },
+  {
+    path: '/viewPendingElection',
+    name: 'viewPendingElection',
+    component: () => import(/* webpackChunkName: "about" */ '../views/ViewPendingElectionView.vue')
+  },
+  {
+    path: '/setElection',
+    name: 'setElection',
+    component: () => import(/* webpackChunkName: "about" */ '../views/SetElectionView.vue')
+
+  },
+  {
+      path: '/resultView',
+      name: 'resultView',
+      component: () => import(/* webpackChunkName: "about" */ '../views/ResultView.vue')
   }
   
 ]
@@ -45,3 +61,16 @@ const router = createRouter({
 })
 
 export default router
+
+router.beforeEach((to, from, next) => {
+  const user = localStorage.getItem('user')
+  console.log("check user", user)
+  if (to.name === 'login' && user) {
+    next('/')
+  } else if (to.name === 'home' && !user) {
+    next('/login')
+  } else {
+    next()
+  }
+});
+
